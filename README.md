@@ -1,35 +1,44 @@
 # cwm-worker-logger
 
-## Usage
+This logging component uses [fluentd](https://www.fluentd.org/) as its log
+collector and forwarder. For the HTTP input from MinIO and their metrics
+collection, a custom input plugin (`fluent-plugin-http-cwm`) has been used. Any
+output plugins may be used as the log targets such as S3, ElasticSearch, etc.
 
-Create a config file
+For more details, please visit:
 
-```
-mkdir -p .config
-echo '{
-    "HTTP_LISTEN_PORT": 8500,
-    "DEBUG": true,
-    "REDIS_HOST": "redis"
-    "REDIS_PORT": 6379,
-    "FLUSH_INTERVAL_SECONDS": 60,
-    "REDIS_KEY_PREFIX_DEPLOYMENT_API_METRIC": "deploymentid:minio-metrics",
-    "REDIS_KEY_PREFIX_DEPLOYMENT_LAST_ACTION": "deploymentid:last_action",
-    "LOGS_TARGET": "s3",
-    "LOGS_CONFIG": {
-        "ACCESS_KEY_ID": "",
-        "SECRET_ACCESS_KEY": ""
-    }
-}' > .config/config.json
-```
+- [fluent-plugin-http-cwm](https://github.com/iamAzeem/fluent-plugin-http-cwm)
+- [fluentd output plugins](https://docs.fluentd.org/output)
 
-Build and run the docker compose stack
+## Configuration
 
-```
+As the fluentd is the underlying logging engine, its configuration will be used.
+
+For details, see [fluentd configuration](https://docs.fluentd.org/configuration).
+
+The sample configuration files are located under the [config](config) folder.
+
+| config file                               | default   | log targets               |
+|:------------------------------------------|:---------:|:--------------------------|
+| [fluent.conf](config/fluent.conf)         | Yes       | stdout only               |
+| [fluent-s3.conf](config/fluent-s3.conf)   | -         | stdout + S3               |
+| [fluent-es.conf](config/fluent-es.conf)   | -         | stdout + ElasticSearch    |
+
+**NOTE**: By default, [stdout](https://docs.fluentd.org/output/stdout) is
+enabled in all the sample config files.
+
+## Run
+
+Build and run the `docker-compose` stack:
+
+```shell
 docker-compose up -d --build
 ```
 
-Send logs to the logger
+## Test
 
-```
-tests/send_logs.sh localhost:8500
+Send logs to the logger:
+
+```shell
+./tests/send_logs.sh localhost:8500/logs
 ```

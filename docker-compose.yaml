@@ -3,16 +3,19 @@ version: '3.4'
 services:
 
   logger:
+    container_name: cwm-worker-logger
     image: cwm-worker-logger
     build: .
     ports:
       - "8500:8500"
-    environment:
-      CWM_WORKER_LOGGER_CONFIG_FILE: "/opt/cwm-worker-logger-config/config.json"
     volumes:
-      - "./.config:/opt/cwm-worker-logger-config"
+      - "./config/:/fluentd/etc/"
+    command: -c "/fluentd/etc/fluent.conf"
+    depends_on:
+      - redis
 
   redis:
+    container_name: cwm-redis-metrics
     image: redis:6
     ports:
       - "6379:6379"
