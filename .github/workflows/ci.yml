@@ -1,0 +1,21 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Start Docker container and run tests
+      run: |
+        sudo docker-compose up -d --build && \
+        sudo apt install redis-tools && \
+        ./tests/integration/run.rb
