@@ -1,30 +1,25 @@
 FROM fluent/fluentd:v1.11-1
 
-LABEL maintainer "Name <email>"
-LABEL Description="<Description>" Vendor="<Vendor>" Version="<Version>"
-
 USER root
+
+COPY fluent-plugin-http-cwm.version .
 
 RUN apk add --no-cache --update --virtual .build-deps \
     sudo build-base ruby-dev \
     # CWM HTTP input plugin for MinIO incoming logs
-    && gem install fluent-plugin-http-cwm \
+    && sudo gem install fluent-plugin-http-cwm -v $(cat fluent-plugin-http-cwm.version) \
     # S3 output plugin for log target
-    && sudo gem install fluent-plugin-s3 \
+    && sudo gem install fluent-plugin-s3 -v 1.5.0 \
     # ElasticSearch output plugin for log target
-    && sudo gem install fluent-plugin-elasticsearch \
+    && sudo gem install fluent-plugin-elasticsearch -v 4.3.3 \
     && sudo gem sources --clear-all \
     && apk del .build-deps \
-    && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
-
-COPY config/fluent.conf /fluentd/etc/
-COPY entrypoint.sh /bin/
+    && rm -rf *.version /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
 
 ENV FLUENTD_CONF="fluent.conf"
 ENV LD_PRELOAD=""
 
-# expose HTTP input port
-# EXPOSE 8080 8080
+COPY entrypoint.sh /bin/
 
 USER fluent
 ENTRYPOINT ["tini", "--", "/bin/entrypoint.sh"]
