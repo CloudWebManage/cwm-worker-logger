@@ -18,4 +18,4 @@ jobs:
       run: |
         sudo docker-compose up -d --build && \
         sudo apt install redis-tools && \
-        ./tests/integration/run.rb
+        sudo $(which ruby) ./tests/integration/run.rb
