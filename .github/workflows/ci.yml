@@ -3,12 +3,13 @@ name: ci
 on:
   push:
     branches:
-      - main
+    - main
     paths-ignore:
-      - '**.md'
+    - '**.md'
 
 jobs:
   run-tests:
+    name: Integration Tests
     runs-on: ubuntu-18.04
 
     steps:
