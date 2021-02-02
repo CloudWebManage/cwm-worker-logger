@@ -6,7 +6,7 @@
 
 ![Lines of code](https://img.shields.io/tokei/lines/github/CloudWebManage/cwm-worker-logger?label=LOC)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/CloudWebManage/cwm-worker-logger)
-![GitHub repo size](https://img.shields.io/github/repo-size/iamAzeem/fluent-plugin-http-cwm)
+![GitHub repo size](https://img.shields.io/github/repo-size/CloudWebManage/cwm-worker-logger)
 
 ## Overview
 
