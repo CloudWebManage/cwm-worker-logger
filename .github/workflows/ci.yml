@@ -33,6 +33,7 @@ jobs:
     - name: Build Docker Image
       run: |
         echo $GITHUB_TOKEN | docker login https://docker.pkg.github.com -u cloudwebmanage --password-stdin && \
+        pwd && ls -ahl && \
         docker build $REPO_NAME -t $REPO_NAME
 
     - name: Push Docker Image to Packages with `GITHUB_SHA` tag
