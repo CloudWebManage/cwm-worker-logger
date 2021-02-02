@@ -8,8 +8,8 @@ on:
     - '**.md'
 
 jobs:
-  ci:
-    name: Run Integration Tests and Push Docker Image
+  test-and-package:
+    name: Run Integration Tests and Push Docker Image to Packages
     runs-on: ubuntu-18.04
 
     steps:
