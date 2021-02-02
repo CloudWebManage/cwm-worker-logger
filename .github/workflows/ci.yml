@@ -37,7 +37,7 @@ jobs:
     - name: Push Docker Image to Packages with `GITHUB_SHA` tag
       run: |
         TAG=$GITHUB_SHA
-        TARGET_IMAGE=$ORG_PKG_PATH/$REPO_NAME/$IMAGE:$TAG && \
+        TARGET_IMAGE=$ORG_PKG_PATH/$REPO_NAME/$SOURCE_IMAGE:$TAG && \
         docker tag $SOURCE_IMAGE $TARGET_IMAGE && \
         docker push $TARGET_IMAGE
 
@@ -45,6 +45,6 @@ jobs:
       if: github.ref == 'refs/heads/main'
       run: |
         TAG=latest
-        TARGET_IMAGE=$ORG_PKG_PATH/$REPO_NAME/$IMAGE:$TAG && \
+        TARGET_IMAGE=$ORG_PKG_PATH/$REPO_NAME/$SOURCE_IMAGE:$TAG && \
         docker tag $SOURCE_IMAGE $TARGET_IMAGE && \
         docker push $TARGET_IMAGE
