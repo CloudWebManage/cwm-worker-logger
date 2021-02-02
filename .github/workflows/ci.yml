@@ -8,15 +8,42 @@ on:
     - '**.md'
 
 jobs:
-  run-tests:
-    name: Integration Tests
+  ci:
+    name: Run Integration Tests and Push Docker Image
     runs-on: ubuntu-18.04
 
     steps:
     - uses: actions/checkout@v2
+    - env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PACKAGES_READER_GITHUB_TOKEN: ${{ secrets.PACKAGES_READER_GITHUB_TOKEN }}
+        # PACKAGES_READER_GITHUB_USER: ${{ secrets.PACKAGES_READER_GITHUB_USER }}
+        ORG_PKG_PATH: docker.pkg.github.com/cloudwebmanage
+        SOURCE_IMAGE: cwm-worker-logger
+        REPO_NAME: cwm-worker-logger
 
-    - name: Start Docker container and run tests
+    - name: Start `docker-compose` Stack and Run Tests
       run: |
         sudo docker-compose up -d --build && \
         sudo apt install redis-tools && \
-        sudo $(which ruby) ./tests/integration/run.rb
+        ruby ./tests/integration/run.rb
+
+    - name: Build Docker Image
+      run: |
+        echo $GITHUB_TOKEN | docker login https://docker.pkg.github.com -u cloudwebmanage --password-stdin && \
+        docker build $REPO_NAME -t $REPO_NAME
+
+    - name: Push Docker Image to Packages with `GITHUB_SHA` tag
+      run: |
+        TAG=$GITHUB_SHA
+        TARGET_IMAGE=$ORG_PKG_PATH/$REPO_NAME/$IMAGE:$TAG && \
+        docker tag $SOURCE_IMAGE $TARGET_IMAGE && \
+        docker push $TARGET_IMAGE
+
+    - name: Push docker image to Packages with `latest` tag [branch = 'main']
+      if: github.ref == 'refs/heads/main'
+      run: |
+        TAG=latest
+        TARGET_IMAGE=$ORG_PKG_PATH/$REPO_NAME/$IMAGE:$TAG && \
+        docker tag $SOURCE_IMAGE $TARGET_IMAGE && \
+        docker push $TARGET_IMAGE
