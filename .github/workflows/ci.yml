@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-18.04
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      PACKAGES_READER_GITHUB_TOKEN: ${{ secrets.PACKAGES_READER_GITHUB_TOKEN }}
-      # PACKAGES_READER_GITHUB_USER: ${{ secrets.PACKAGES_READER_GITHUB_USER }}
       ORG_PKG_PATH: docker.pkg.github.com/cloudwebmanage
       SOURCE_IMAGE: cwm-worker-logger
       REPO_NAME: cwm-worker-logger
