@@ -8,8 +8,13 @@ services:
     build: .
     ports:
       - "8500:8500"
-    volumes:
-      - "./config/:/fluentd/etc/"
+    # volumes:
+    #   - "./config/:/fluentd/etc/"
+    environment:
+      REDIS_HOST: "redis"
+      LOG_LEVEL: "debug"
+      UPDATE_GRACE_PERIOD_SECONDS: 5s
+      DEPLOYMENT_API_METRICS_FLUSH_INTERVAL_SECONDS: 5s
     command: -c "/fluentd/etc/fluent.conf"
     depends_on:
       - redis
