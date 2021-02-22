@@ -16,11 +16,11 @@ RUN apk add --no-cache --update --virtual .build-deps \
     && apk del .build-deps \
     && rm -rf *.version /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
 
-# ENV FLUENTD_CONF="/fluentd/etc/fluent.conf"
-ENV LD_PRELOAD=""
-
-COPY ./config/fluent.conf /fluentd/etc/fluent.conf
+COPY ./config/*.conf /fluentd/etc/
 COPY entrypoint.sh /bin/
+
+ENV FLUENTD_CONF="cwm-fluent-default.conf"
+ENV LD_PRELOAD=""
 
 USER fluent
 ENTRYPOINT ["tini", "--", "/bin/entrypoint.sh"]

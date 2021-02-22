@@ -4,18 +4,21 @@ services:
 
   logger:
     container_name: cwm-worker-logger
-    image: cwm-worker-logger
+    image: cwm-worker-logger:latest
     build: .
     ports:
       - "8500:8500"
-    # volumes:
-    #   - "./config/:/fluentd/etc/"
     environment:
-      REDIS_HOST: "redis"
-      LOG_LEVEL: "debug"
+      FLUENTD_CONF: cwm-fluent-default.conf
+      LOG_LEVEL: debug
+      # CWM_HTTP_HOST: localhost
+      # CWM_HTTP_PORT: 8500
+      REDIS_HOST: redis
+      # REDIS_PORT: 6379
       UPDATE_GRACE_PERIOD_SECONDS: 5s
       DEPLOYMENT_API_METRICS_FLUSH_INTERVAL_SECONDS: 5s
-    command: -c "/fluentd/etc/fluent.conf"
+      # REDIS_KEY_PREFIX_DEPLOYMENT_LAST_ACTION: deploymentid:last_action
+      # REDIS_KEY_PREFIX_DEPLOYMENT_API_METRIC: deploymentid:minio-metrics
     depends_on:
       - redis
 
