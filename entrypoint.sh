@@ -9,6 +9,16 @@ if [ -r $DEFAULT ]; then
     set +o allexport
 fi
 
+# Set FLUENTD_CONF according to LOG_PROVIDER environment variable
+# Only the supported log targets are configured, default otherwise
+CONF="default"
+case "$LOG_PROVIDER" in
+    "elasticsearch") CONF="es" ;;
+    "s3") CONF="s3" ;;
+esac
+
+FLUENTD_CONF="cwm-fluent-${CONF}.conf"
+
 # If the user has supplied only arguments append them to `fluentd` command
 if [ "${1#-}" != "$1" ]; then
     set -- fluentd "$@"
@@ -24,5 +34,6 @@ if [ "$1" = "fluentd" ]; then
        set -- "$@" -p /fluentd/plugins
     fi
 fi
+
 
 exec "$@"

@@ -19,7 +19,6 @@ RUN apk add --no-cache --update --virtual .build-deps \
 COPY ./config/*.conf /fluentd/etc/
 COPY entrypoint.sh /bin/
 
-ENV FLUENTD_CONF="cwm-fluent-default.conf"
 ENV LD_PRELOAD=""
 
 USER fluent
