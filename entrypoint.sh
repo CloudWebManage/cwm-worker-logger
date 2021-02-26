@@ -13,8 +13,9 @@ fi
 # Only the supported log targets are configured, default otherwise
 CONF="default"
 case "$LOG_PROVIDER" in
-    "elasticsearch") CONF="es" ;;
-    "s3") CONF="s3" ;;
+    "stdout") CONF=$LOG_PROVIDER ;;
+    "elasticsearch") CONF=$LOG_PROVIDER ;;
+    "s3") CONF=$LOG_PROVIDER ;;
 esac
 
 FLUENTD_CONF="cwm-fluent-${CONF}.conf"
@@ -34,6 +35,5 @@ if [ "$1" = "fluentd" ]; then
        set -- "$@" -p /fluentd/plugins
     fi
 fi
-
 
 exec "$@"

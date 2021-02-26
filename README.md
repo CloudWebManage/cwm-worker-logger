@@ -28,14 +28,12 @@ For details, see [fluentd configuration](https://docs.fluentd.org/configuration)
 
 The sample configuration files are located under the [config](config) folder.
 
-| config file                                 |      log targets       |
-| :------------------------------------------ | :--------------------: |
-| [fluent.conf](config/fluent.conf) (default) |      stdout only       |
-| [fluent-s3.conf](config/fluent-s3.conf)     |      stdout + S3       |
-| [fluent-es.conf](config/fluent-es.conf)     | stdout + ElasticSearch |
-
-**NOTE**: By default, [stdout](https://docs.fluentd.org/output/stdout) is
-enabled in all the sample config files.
+| config file                    | log target    |
+| :----------------------------- | :-----------: |
+| cwm-fluent-default.conf        | none          |
+| cwm-fluent-stdout.conf         | stdout        |
+| cwm-fluent-elasticsearch.conf  | ElasticSearch |
+| cwm-fluent-s3.conf             | AWS S3        |
 
 ## Run
 

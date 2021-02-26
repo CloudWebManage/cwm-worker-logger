@@ -10,6 +10,7 @@ services:
       - "8500:8500"
     environment:
       LOG_PROVIDER: default
+      # LOG_PROVIDER: stdout
       # LOG_PROVIDER: elasticsearch
       # LOG_PROVIDER: s3
       LOG_LEVEL: debug
