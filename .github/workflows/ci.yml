@@ -41,8 +41,25 @@ jobs:
 
     - name: Push docker image to Packages with `latest` tag [branch = 'main']
       if: github.ref == 'refs/heads/main'
+      env:
+        DEPLOY_KEY: ${{ secrets.CWM_WORKER_MINIO_DEPLOY_KEY }}
+        DEPLOY_KEY_FILE: cwm_worker_helm_deploy_key_file
+        IMAGE_FILE_NAME: cwm-worker-logger.image
       run: |
         TAG=latest
         TARGET_IMAGE=$ORG_PKG_PATH/$REPO_NAME/$SOURCE_IMAGE:$TAG && \
         docker tag $SOURCE_IMAGE $TARGET_IMAGE && \
-        docker push $TARGET_IMAGE
+        docker push $TARGET_IMAGE && \
+        echo "$DEPLOY_KEY" > $DEPLOY_KEY_FILE && \
+        chmod 400 $DEPLOY_KEY_FILE && \
+        export GIT_SSH_COMMAND="ssh -i $(pwd)/$DEPLOY_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" && \
+        git config user.name "$REPO_NAME CI" && \
+        git config user.email "$REPO_NAME-ci@localhost" && \
+        git clone git@github.com:CloudWebManage/cwm-worker-deployment-minio.git && \
+        cd cwm-worker-deployment-minio/helm && \
+        IMAGE_WITH_SHA=$ORG_PKG_PATH/$REPO_NAME/$SOURCE_IMAGE:$GITHUB_SHA && \
+        echo $IMAGE_WITH_SHA > $IMAGE_FILE_NAME && \
+        git add $IMAGE_FILE_NAME && \
+        git commit -m "Automatic update of image with SHA for $REPO_NAME." && \
+        git push origin main && \
+        echo "Image with SHA updated successfully!"
