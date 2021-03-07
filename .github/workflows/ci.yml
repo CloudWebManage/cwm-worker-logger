@@ -53,8 +53,8 @@ jobs:
         echo "$DEPLOY_KEY" > $DEPLOY_KEY_FILE && \
         chmod 400 $DEPLOY_KEY_FILE && \
         export GIT_SSH_COMMAND="ssh -i $(pwd)/$DEPLOY_KEY_FILE -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" && \
-        git config user.name "$REPO_NAME CI" && \
-        git config user.email "$REPO_NAME-ci@localhost" && \
+        git config --global user.name "$REPO_NAME CI" && \
+        git config --global user.email "$REPO_NAME-ci@localhost" && \
         git clone git@github.com:CloudWebManage/cwm-worker-deployment-minio.git && \
         cd cwm-worker-deployment-minio/helm && \
         IMAGE_WITH_SHA=$ORG_PKG_PATH/$REPO_NAME/$SOURCE_IMAGE:$GITHUB_SHA && \
