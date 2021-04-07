@@ -21,6 +21,9 @@ COPY entrypoint.sh /bin/
 
 ENV LD_PRELOAD=""
 
+# use UTC timezone
+ENV TZ="UTC"
+
 USER fluent
 ENTRYPOINT ["tini", "--", "/bin/entrypoint.sh"]
 CMD ["fluentd"]
