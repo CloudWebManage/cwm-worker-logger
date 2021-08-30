@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-18.04
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      ORG_PKG_PATH: docker.pkg.github.com/cloudwebmanage
+      ORG_PKG_PATH: ghcr.io/cloudwebmanage
       SOURCE_IMAGE: cwm-worker-logger
       REPO_NAME: cwm-worker-logger
 
@@ -29,7 +29,7 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        echo $GITHUB_TOKEN | docker login https://docker.pkg.github.com -u cloudwebmanage --password-stdin && \
+        echo $GITHUB_TOKEN | docker login https://ghcr.io -u cloudwebmanage --password-stdin && \
         docker build . -t $REPO_NAME
 
     - name: Push Docker Image to Packages with `GITHUB_SHA` tag
