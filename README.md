@@ -12,12 +12,12 @@
 
 This logging component uses [fluentd](https://www.fluentd.org/) as the log
 collector and forwarder. For the HTTP input from MinIO and their metrics
-collection, a custom input plugin (`fluent-plugin-http-cwm`) is used. Any output
+collection, a custom input plugin (`fluent-plugin-cwm-http`) is used. Any output
 plugins can be configured as the log targets such as S3, ElasticSearch, etc.
 
 For more details, please visit:
 
-- [fluent-plugin-http-cwm](https://github.com/iamAzeem/fluent-plugin-http-cwm)
+- [fluent-plugin-http-cwm](https://github.com/CloudWebManage/fluent-plugin-http-cwm)
 - [fluentd output plugins](https://docs.fluentd.org/output)
 
 ## Configuration

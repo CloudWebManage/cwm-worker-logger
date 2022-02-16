@@ -2,12 +2,12 @@ FROM fluent/fluentd:v1.11-1
 
 USER root
 
-COPY fluent-plugin-http-cwm.version .
+COPY fluent-plugin-cwm-http.version .
 
 RUN apk add --no-cache --update --virtual .build-deps \
     sudo build-base ruby-dev \
     # CWM HTTP input plugin for MinIO incoming logs
-    && sudo gem install fluent-plugin-http-cwm -v $(cat fluent-plugin-http-cwm.version) \
+    && sudo gem install fluent-plugin-cwm-http -v $(cat fluent-plugin-cwm-http.version) \
     # S3 output plugin for log target
     && sudo gem install fluent-plugin-s3 -v 1.5.0 \
     # ElasticSearch output plugin for log target
